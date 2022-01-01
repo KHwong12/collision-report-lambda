@@ -1,4 +1,4 @@
-FROM public.ecr.aws/lambda/provided
+FROM amazon/aws-lambda-provided:latest
 
 ENV R_VERSION=4.1.0
 
