@@ -26,7 +26,7 @@ options(scipen = 999)
 library(htmltools)
 ```
 
-```{r sanity-check}
+```{r sanity-check, eval=FALSE}
 
 is_valid_serial_no = (is.numeric(params$COLLISION_SERIAL_NO) &
                           # use isTRUE to escape from logical(0) if COLLISION_SERIAL_NO is NULL
