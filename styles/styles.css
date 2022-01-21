@@ -1,0 +1,22 @@
+h1, .h1, h2, .h2 {
+  margin-top: 48px;
+}
+
+h3, .h3 {
+  margin-top: 36px;
+}
+
+h4, .h4 {
+  margin-top: 24px;
+}
+
+p, .p, ol, .ol, ul, .ul {
+  font-size: 16px;
+  line-height: 1.5;
+  color: #232323;
+}
+
+#accident-subtable {
+  /* override default bootstrap settings */
+  max-width: 60% !important;
+}
