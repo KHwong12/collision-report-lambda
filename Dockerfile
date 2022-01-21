@@ -21,7 +21,8 @@ RUN yum -y install libcurl-devel libxml2-devel fontconfig-devel freetype-devel l
 RUN yum -y install libpng-devel gdal-devel gdal geos-devel proj-devel proj-epsg
 
 # Package for runtime
-RUN Rscript -e "install.packages(c('httr', 'jsonlite', 'logger', 'rmarkdown', 'lambdr'), repos = 'https://packagemanager.rstudio.com/all/__linux__/centos7/latest')"
+RUN Rscript -e "install.packages(c('httr', 'jsonlite', 'logger', 'rmarkdown', 'remotes'), repos = 'https://packagemanager.rstudio.com/all/__linux__/centos7/latest')"
+RUN Rscript -e "remotes::install_github('mdneuzerling/lambdr')"
 
 # Package for report
 RUN Rscript -e "install.packages(c('dplyr', 'tidyr', 'fst', 'leaflet', 'kableExtra', 'htmltools'), repos = 'https://packagemanager.rstudio.com/all/__linux__/centos7/latest')"
