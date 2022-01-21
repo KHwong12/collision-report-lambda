@@ -20,9 +20,11 @@ RUN yum -y install libcurl-devel libxml2-devel fontconfig-devel freetype-devel l
 # System requirements for leaflet
 RUN yum -y install libpng-devel gdal-devel gdal geos-devel proj-devel proj-epsg
 
-RUN wget https://github.com/jgm/pandoc/releases/download/2.11.4/pandoc-2.11.4-linux-amd64.tar.gz
-RUN tar xvzf pandoc-2.11.4-linux-amd64.tar.gz --strip-components 1 -C /usr/local
-RUN rm -rf pandoc-2.11.4*
+ENV PANDOC_VERSION=2.16.2
+
+RUN wget https://github.com/jgm/pandoc/releases/download/${PANDOC_VERSION}/pandoc-${PANDOC_VERSION}-linux-amd64.tar.gz
+RUN tar xvzf pandoc-${PANDOC_VERSION}-linux-amd64.tar.gz --strip-components 1 -C /usr/local
+RUN rm -rf pandoc-${PANDOC_VERSION}*
 
 # Package for runtime
 RUN Rscript -e "install.packages(c('httr', 'jsonlite', 'logger', 'rmarkdown', 'remotes'), repos = 'https://packagemanager.rstudio.com/all/__linux__/centos7/latest')"
