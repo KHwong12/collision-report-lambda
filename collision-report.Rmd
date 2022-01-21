@@ -13,7 +13,7 @@ output:
       after_body: templates/footer.html
 always_allow_html: yes
 params:
-  COLLISION_SERIAL_NO: NULL
+  COLLISION_SERIAL_NO: ''
 ---
 
 ```{r setup, include=FALSE}
@@ -28,9 +28,29 @@ library(htmltools)
 
 ```{r sanity-check}
 
-is_valid_serial_no = (is.numeric(params$COLLISION_SERIAL_NO) &
-                          # use isTRUE to escape from logical(0) if COLLISION_SERIAL_NO is NULL
-                          isTRUE(params$COLLISION_SERIAL_NO >= 1) & isTRUE(params$COLLISION_SERIAL_NO <= 95821))
+# When receive as params of REST API from API Gateway, params$COLLISION_SERIAL_NO is in the type of `char`
+# params$COLLISION_SERIAL_NO >= 1 will silently convert datatype, thus throw no error
+# Need to convert params to double first
+
+
+message("Input serial no: ", params$COLLISION_SERIAL_NO)
+
+message("typeof(params$COLLISION_SERIAL_NO): ", typeof(params$COLLISION_SERIAL_NO))
+message("is.numeric(params$COLLISION_SERIAL_NO): ", is.numeric(params$COLLISION_SERIAL_NO))
+message("is.double(params$COLLISION_SERIAL_NO): ", is.double(params$COLLISION_SERIAL_NO))
+message("isTRUE(params$COLLISION_SERIAL_NO >= 1): ", isTRUE(params$COLLISION_SERIAL_NO >= 1))
+message("isTRUE(params$COLLISION_SERIAL_NO <= 95821): ", isTRUE(params$COLLISION_SERIAL_NO <= 95821))
+
+# TODO: cater for special values, e.g. NULL
+
+is_valid_serial_no = (
+  !is.na(as.double(params$COLLISION_SERIAL_NO)) &
+  # use isTRUE to escape from logical(0) if COLLISION_SERIAL_NO is NULL
+  isTRUE(as.double(params$COLLISION_SERIAL_NO) >= 1) &
+  isTRUE(as.double(params$COLLISION_SERIAL_NO) <= 95821)
+  )
+
+message("is_valid_serial_no: ", is_valid_serial_no)
 
 if (!is_valid_serial_no) {
   htmltools::p(htmltools::strong("This collision serial number does not exist in the database!"), style = "text-align:center")
@@ -67,7 +87,7 @@ LUMEN_THEME_COLOR = "#158cba"
 ```{r}
 # 66897 is selected for test
 # another for test without long/lat: 79581
-hk_accidents_selected = filter(hk_accidents, Serial_No_ == params$COLLISION_SERIAL_NO)
+hk_accidents_selected = filter(hk_accidents, Serial_No_ == as.double(params$COLLISION_SERIAL_NO))
 
 ```
 

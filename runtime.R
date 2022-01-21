@@ -4,6 +4,8 @@ temporary_directory <- Sys.getenv("TMPDIR", "/tmp")
 # The function passed to lambda
 report <- function(serial_no) {
 
+  logger::log_debug("Serial number", serial_no, "received")
+
   outfile <- file.path(
     temporary_directory,
     paste0("collision_", serial_no, "_", as.integer(Sys.time()), ".html")
