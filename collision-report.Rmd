@@ -13,7 +13,7 @@ output:
       after_body: templates/footer.html
 always_allow_html: yes
 params:
-  COLLISION_SERIAL_NO: NULL
+  COLLISION_SERIAL_NO: ''
 ---
 
 ```{r setup, include=FALSE}
