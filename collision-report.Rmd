@@ -1,6 +1,6 @@
 ---
-title: "Details of Traffic Collision - Test Layout"
-date: 'Last updated: `r format(Sys.Date(), "%B %d %Y")`'
+title: "Detail Report of Collision No. `r as.character(params$COLLISION_SERIAL_NO)`"
+date: 'Date Created: `r format(Sys.Date(), "%B %d %Y")`'
 output:
   html_document:
     number_sections: no
@@ -90,9 +90,6 @@ THEME_COLOR = "#0d0d0d"
 hk_accidents_selected = filter(hk_accidents, Serial_No_ == as.double(params$COLLISION_SERIAL_NO))
 
 ```
-
-
-## Detail Report of Collision No. `r as.character(params$COLLISION_SERIAL_NO)`
 
 <br>
 
