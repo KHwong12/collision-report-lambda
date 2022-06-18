@@ -1,6 +1,6 @@
 ---
 title: "Detail Report of Collision No. `r as.character(params$COLLISION_SERIAL_NO)`"
-date: 'Date Created: `r format(Sys.Date(), "%B %d %Y")`'
+date: 'Date Created: `r format(Sys.Date(), "%d %B %Y")`'
 output:
   html_document:
     number_sections: no
