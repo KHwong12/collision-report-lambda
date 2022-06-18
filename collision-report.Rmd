@@ -1,6 +1,6 @@
 ---
-title: "Details of Traffic Collision - Test Layout"
-date: 'Last updated: `r format(Sys.Date(), "%B %d %Y")`'
+title: "Detail Report of Collision No. `r as.character(params$COLLISION_SERIAL_NO)`"
+date: 'Date Created: `r format(Sys.Date(), "%d %B %Y")`'
 output:
   html_document:
     number_sections: no
@@ -81,7 +81,7 @@ hk_casualties = fst::read_fst("./data/hk_casualties.fst")
 
 ```{r}
 # color and html properties
-LUMEN_THEME_COLOR = "#158cba"
+THEME_COLOR = "#0d0d0d"
 ```
 
 ```{r}
@@ -90,9 +90,6 @@ LUMEN_THEME_COLOR = "#158cba"
 hk_accidents_selected = filter(hk_accidents, Serial_No_ == as.double(params$COLLISION_SERIAL_NO))
 
 ```
-
-
-## Detail Report of Collision No. `r as.character(params$COLLISION_SERIAL_NO)`
 
 <br>
 
@@ -157,30 +154,26 @@ vartype_how = c("Vehicle_Movements", "Overtaking", "Road_Type", "Junction_Type",
 ```
 
 ```{r}
-# convert all columns to chr type
-row_chr = lapply(hk_accidents_selected, as.character)
-
-
-# convert back to data frame again, then pivot from single row to single column
-hk_accidents_selected_outtable = row_chr %>%
+hk_accidents_selected_outtable = hk_accidents_selected %>%
+  t() %>%
+  # single-row data.frame after transpose will become matrix class, need to convert back to data.frame again
   as.data.frame() %>%
-  pivot_longer(cols = everything()) %>%
+  tibble::rownames_to_column() %>%
+  rename(value = "V1") %>%
   # classify by subgroup of variable
   mutate(
       vartype = case_when(
-         name %in% vartype_whenwhere ~ "whenwhere",
-         name %in% vartype_what ~ "what",
-         name %in% vartype_how ~ "how"
+         rowname %in% vartype_whenwhere ~ "whenwhere",
+         rowname %in% vartype_what ~ "what",
+         rowname %in% vartype_how ~ "how"
          )
   )
-
-
+  
 # Factor the subgroup to arrange rows easier
 arrange_order = c("whenwhere", "what", "how")
 
 hk_accidents_selected_outtable_arrange = hk_accidents_selected_outtable %>%
-  mutate(vartype_ft = factor(vartype, levels = arrange_order)) %>%
-  arrange(vartype_ft)
+  mutate(vartype_ft = factor(vartype, levels = arrange_order))
 
 table_whenwhere = filter(hk_accidents_selected_outtable_arrange, vartype == "whenwhere") %>% select(name, value)
 table_what = filter(hk_accidents_selected_outtable_arrange, vartype == "what") %>% select(name, value)
@@ -208,7 +201,7 @@ knitr::kable(
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover")) %>%
   kableExtra::column_spec(1, bold = T, border_right = T) %>%
     # change text color and background color of header row
-  row_spec(0, color = "#FFFFFF", background = LUMEN_THEME_COLOR)
+  row_spec(0, color = "#FFFFFF", background = THEME_COLOR)
 ```
 
 ### Severity
@@ -228,7 +221,7 @@ knitr::kable(
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover")) %>%
   kableExtra::column_spec(1, bold = T, border_right = T) %>%
   # change text color and background color of header row
-  row_spec(0, color = "#FFFFFF", background = LUMEN_THEME_COLOR)
+  row_spec(0, color = "#FFFFFF", background = THEME_COLOR)
 ```
 
 ### How the collision happened
@@ -248,7 +241,7 @@ knitr::kable(
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover")) %>%
   kableExtra::column_spec(1, bold = T, border_right = T) %>%
   # change text color and background color of header row
-  row_spec(0, color = "#FFFFFF", background = LUMEN_THEME_COLOR)
+  row_spec(0, color = "#FFFFFF", background = THEME_COLOR)
 ```
 
 ### Show all details
@@ -267,7 +260,7 @@ knitr::kable(
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover")) %>%
   kableExtra::column_spec(1, bold = T, border_right = T) %>%
   # change text color and background color of header row
-  row_spec(0, color = "#FFFFFF", background = LUMEN_THEME_COLOR)
+  row_spec(0, color = "#FFFFFF", background = THEME_COLOR)
 ```
 
 ## {-}
@@ -289,7 +282,7 @@ hk_vehicles_selected %>%
   knitr::kable(caption = "List of vehicles involved") %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = F) %>%
   # change text color and background color of header row
-  row_spec(0, color = "#FFFFFF", background = "#178CBA")
+  row_spec(0, color = "#FFFFFF", background = THEME_COLOR)
 ```
 
 ## Causalities
@@ -307,6 +300,6 @@ hk_casualties_selected %>%
   knitr::kable(caption = "List of casualties") %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = F) %>%
   # change text color and background color of header row
-  row_spec(0, color = "#FFFFFF", background = "#178CBA")
+  row_spec(0, color = "#FFFFFF", background = THEME_COLOR)
 ```
 
