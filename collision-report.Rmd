@@ -166,7 +166,8 @@ hk_accidents_selected_outtable = hk_accidents_selected %>%
          rowname %in% vartype_whenwhere ~ "whenwhere",
          rowname %in% vartype_what ~ "what",
          rowname %in% vartype_how ~ "how"
-         )
+         ),
+      print_name = gsub("_", " ", rowname)
   )
   
 # Factor the subgroup to arrange rows easier
@@ -175,10 +176,11 @@ arrange_order = c("whenwhere", "what", "how")
 hk_accidents_selected_outtable_arrange = hk_accidents_selected_outtable %>%
   mutate(vartype_ft = factor(vartype, levels = arrange_order))
 
-table_whenwhere = filter(hk_accidents_selected_outtable_arrange, vartype == "whenwhere") %>% select(name, value)
-table_what = filter(hk_accidents_selected_outtable_arrange, vartype == "what") %>% select(name, value)
-table_how = filter(hk_accidents_selected_outtable_arrange, vartype == "how") %>% select(name, value)
-table_all = filter(hk_accidents_selected_outtable_arrange, !is.na(vartype)) %>% select(name, value)
+# REFACTOR: Consider using dplyr::group_split
+table_whenwhere = filter(hk_accidents_selected_outtable_arrange, vartype == "whenwhere") %>% select(print_name, value)
+table_what = filter(hk_accidents_selected_outtable_arrange, vartype == "what") %>% select(print_name, value)
+table_how = filter(hk_accidents_selected_outtable_arrange, vartype == "how") %>% select(print_name, value)
+table_all = filter(hk_accidents_selected_outtable_arrange, !is.na(vartype)) %>% select(print_name, value)
 ```
 
 
