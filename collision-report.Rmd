@@ -282,7 +282,7 @@ hk_vehicles_selected %>%
   knitr::kable(caption = "List of vehicles involved") %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = F) %>%
   # change text color and background color of header row
-  row_spec(0, color = "#FFFFFF", background = "#178CBA")
+  row_spec(0, color = "#FFFFFF", background = THEME_COLOR)
 ```
 
 ## Causalities
@@ -300,6 +300,6 @@ hk_casualties_selected %>%
   knitr::kable(caption = "List of casualties") %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = F) %>%
   # change text color and background color of header row
-  row_spec(0, color = "#FFFFFF", background = "#178CBA")
+  row_spec(0, color = "#FFFFFF", background = THEME_COLOR)
 ```
 
