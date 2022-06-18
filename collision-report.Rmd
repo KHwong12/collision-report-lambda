@@ -81,7 +81,7 @@ hk_casualties = fst::read_fst("./data/hk_casualties.fst")
 
 ```{r}
 # color and html properties
-LUMEN_THEME_COLOR = "#158cba"
+THEME_COLOR = "#0d0d0d"
 ```
 
 ```{r}
@@ -208,7 +208,7 @@ knitr::kable(
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover")) %>%
   kableExtra::column_spec(1, bold = T, border_right = T) %>%
     # change text color and background color of header row
-  row_spec(0, color = "#FFFFFF", background = LUMEN_THEME_COLOR)
+  row_spec(0, color = "#FFFFFF", background = THEME_COLOR)
 ```
 
 ### Severity
@@ -228,7 +228,7 @@ knitr::kable(
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover")) %>%
   kableExtra::column_spec(1, bold = T, border_right = T) %>%
   # change text color and background color of header row
-  row_spec(0, color = "#FFFFFF", background = LUMEN_THEME_COLOR)
+  row_spec(0, color = "#FFFFFF", background = THEME_COLOR)
 ```
 
 ### How the collision happened
@@ -248,7 +248,7 @@ knitr::kable(
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover")) %>%
   kableExtra::column_spec(1, bold = T, border_right = T) %>%
   # change text color and background color of header row
-  row_spec(0, color = "#FFFFFF", background = LUMEN_THEME_COLOR)
+  row_spec(0, color = "#FFFFFF", background = THEME_COLOR)
 ```
 
 ### Show all details
@@ -267,7 +267,7 @@ knitr::kable(
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover")) %>%
   kableExtra::column_spec(1, bold = T, border_right = T) %>%
   # change text color and background color of header row
-  row_spec(0, color = "#FFFFFF", background = LUMEN_THEME_COLOR)
+  row_spec(0, color = "#FFFFFF", background = THEME_COLOR)
 ```
 
 ## {-}
