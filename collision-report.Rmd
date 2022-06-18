@@ -154,30 +154,26 @@ vartype_how = c("Vehicle_Movements", "Overtaking", "Road_Type", "Junction_Type",
 ```
 
 ```{r}
-# convert all columns to chr type
-row_chr = lapply(hk_accidents_selected, as.character)
-
-
-# convert back to data frame again, then pivot from single row to single column
-hk_accidents_selected_outtable = row_chr %>%
+hk_accidents_selected_outtable = hk_accidents_selected %>%
+  t() %>%
+  # single-row data.frame after transpose will become matrix class, need to convert back to data.frame again
   as.data.frame() %>%
-  pivot_longer(cols = everything()) %>%
+  tibble::rownames_to_column() %>%
+  rename(value = "V1") %>%
   # classify by subgroup of variable
   mutate(
       vartype = case_when(
-         name %in% vartype_whenwhere ~ "whenwhere",
-         name %in% vartype_what ~ "what",
-         name %in% vartype_how ~ "how"
+         rowname %in% vartype_whenwhere ~ "whenwhere",
+         rowname %in% vartype_what ~ "what",
+         rowname %in% vartype_how ~ "how"
          )
   )
-
-
+  
 # Factor the subgroup to arrange rows easier
 arrange_order = c("whenwhere", "what", "how")
 
 hk_accidents_selected_outtable_arrange = hk_accidents_selected_outtable %>%
-  mutate(vartype_ft = factor(vartype, levels = arrange_order)) %>%
-  arrange(vartype_ft)
+  mutate(vartype_ft = factor(vartype, levels = arrange_order))
 
 table_whenwhere = filter(hk_accidents_selected_outtable_arrange, vartype == "whenwhere") %>% select(name, value)
 table_what = filter(hk_accidents_selected_outtable_arrange, vartype == "what") %>% select(name, value)
