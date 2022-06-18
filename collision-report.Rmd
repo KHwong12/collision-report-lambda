@@ -166,7 +166,8 @@ hk_accidents_selected_outtable = hk_accidents_selected %>%
          rowname %in% vartype_whenwhere ~ "whenwhere",
          rowname %in% vartype_what ~ "what",
          rowname %in% vartype_how ~ "how"
-         )
+         ),
+      print_name = gsub("_", " ", rowname)
   )
   
 # Factor the subgroup to arrange rows easier
@@ -175,10 +176,11 @@ arrange_order = c("whenwhere", "what", "how")
 hk_accidents_selected_outtable_arrange = hk_accidents_selected_outtable %>%
   mutate(vartype_ft = factor(vartype, levels = arrange_order))
 
-table_whenwhere = filter(hk_accidents_selected_outtable_arrange, vartype == "whenwhere") %>% select(name, value)
-table_what = filter(hk_accidents_selected_outtable_arrange, vartype == "what") %>% select(name, value)
-table_how = filter(hk_accidents_selected_outtable_arrange, vartype == "how") %>% select(name, value)
-table_all = filter(hk_accidents_selected_outtable_arrange, !is.na(vartype)) %>% select(name, value)
+# REFACTOR: Consider using dplyr::group_split
+table_whenwhere = filter(hk_accidents_selected_outtable_arrange, vartype == "whenwhere") %>% select(print_name, value)
+table_what = filter(hk_accidents_selected_outtable_arrange, vartype == "what") %>% select(print_name, value)
+table_how = filter(hk_accidents_selected_outtable_arrange, vartype == "how") %>% select(print_name, value)
+table_all = filter(hk_accidents_selected_outtable_arrange, !is.na(vartype)) %>% select(print_name, value)
 ```
 
 
@@ -276,10 +278,12 @@ hk_vehicles_selected = filter(hk_vehicles, Serial_No_ == params$COLLISION_SERIAL
 ```{r}
 SELECTED_VEHICLE_COLUMNS = c("Driver_Age", "Driver_Sex", "Year_of_Manufacture", "Severity_of_Accident", "Vehicle_Class")
 
+SELECTED_VEHICLE_COLUMNS_NAMES = c("Age", "Sex", "Year of Manufacture", "Severity", "Vehicle")
+
 hk_vehicles_selected %>%
   select(all_of(SELECTED_VEHICLE_COLUMNS)) %>%
   # do not add thousand separators as year are now in double type
-  knitr::kable(caption = "List of vehicles involved") %>%
+  knitr::kable(caption = "List of vehicles involved", col.names = SELECTED_VEHICLE_COLUMNS_NAMES) %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = F) %>%
   # change text color and background color of header row
   row_spec(0, color = "#FFFFFF", background = THEME_COLOR)
@@ -294,10 +298,12 @@ hk_casualties_selected = filter(hk_casualties, Serial_No_ == params$COLLISION_SE
 ```{r}
 SELECTED_CAUSALTY_COLUMNS = c("Casualty_Age", "Casualty_Sex","Degree_of_Injury", "Role_of_Casualty", "Pedestrian_Action", "Vehicle_Class_of_Driver_or_Pass")
 
+SELECTED_CAUSALTY_COLUMNS_NAMES = c("Age", "Sex", "Degree of Injury", "Role", "Action (for pedestrian)", "Vehicle Class (for drivers / passengers)")
+
 hk_casualties_selected %>%
   select(all_of(SELECTED_CAUSALTY_COLUMNS)) %>%
   # do not add thousand separators as year are now in double type
-  knitr::kable(caption = "List of casualties") %>%
+  knitr::kable(caption = "List of casualties", col.names = SELECTED_CAUSALTY_COLUMNS_NAMES) %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = F) %>%
   # change text color and background color of header row
   row_spec(0, color = "#FFFFFF", background = THEME_COLOR)
